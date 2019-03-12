@@ -1,0 +1,130 @@
+.el-main {
+  background: #f8f8f8;
+}
+
+.fr{
+  float: right;
+}
+
+.el-button--full{
+  width: 100%;
+}
+
+.el-input--small .el-input__inner {
+  height: 30px;
+}
+
+.el-tooltip__popper.is-dark{
+  left: 20px;
+}
+
+.ql-container.ql-snow {
+  max-height: 500px;
+  overflow: scroll;
+}
+
+//iconfont
+[class*=" ibnn-"], [class^=ibnn-] {
+  font-family: 'iconfont'!important;
+  speak: none;
+  font-style: normal;
+  font-weight: 400;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  vertical-align: baseline;
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.el-submenu [class^=ibnn-] {
+  vertical-align: middle;
+  margin-right: 5px;
+  width: 24px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.el-header {
+  line-height: 60px;
+  background-color: #00C6AE;
+  font-size: 22px;
+  color: #fff;
+  .el-dropdown-link {
+    cursor: pointer;
+    color: #fff;
+  }
+}
+.el-table thead {
+  color: #333333;
+}
+
+.el-table {
+  color: #333333;
+}
+
+.el-button {
+  padding: 0;
+  border: none;
+}
+.el-button--primary {
+  width: 84px;
+  height: 28px;
+  line-height: 28px;
+  border-radius: 14px;
+  color: #fff;
+  background: #00C6AE;
+}
+
+.el-menu-item,
+.el-menu-item i {
+  color: #4C5E5C;
+}
+
+.el-menu-item.is-active {
+  color: #4C5E5C;
+}
+
+.el-menu-item:focus, .el-menu-item:hover {
+  color: #009688
+  i {
+    color: #009688
+  }
+}
+
+.el-aside{
+  background-color: #F2F5F6
+}
+
+.el-menu{
+  border: 0;
+  color: #4C5E5C;
+  background-color: #F2F5F6;
+}
+.el-submenu{
+  .el-submenu__title{
+    color: #4C5E5C;
+    &:hover{
+      background-color: #F2F5F6;
+    }
+  }
+  .el-menu-item{
+    background-color: #F2F5F6;
+    color: #4C5E5C;
+    padding-left: 50px !important;
+    &.is-active{
+      color: #00C6AE;
+      // background-color: #676b65;
+    }
+  }
+  .el-submenu{
+    background-color: #434a50;
+    .el-submenu__title{
+      padding-left: 50px !important;
+    }
+  }
+  i{
+    color: #4C5E5C;
+  }
+}

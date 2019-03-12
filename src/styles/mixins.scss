@@ -1,0 +1,179 @@
+/// 加亮颜色（以百分比的形式加入加色）
+///
+/// @param {Color} $color - 需要被加亮的颜色值
+/// @param {Number} $percentage - 需要增加的白色的百分比
+@function tint($color, $percentage) {
+  @return mix(white, $color, $percentage);
+}
+
+/// 加暗颜色（以百分比的形式加入黑色）
+///
+/// @param {Color} $color - 需要被加暗的颜色值
+/// @param {Number} $percentage - 需要增加的黑色的百分比
+@function shade($color, $percentage) {
+  @return mix(black, $color, $percentage);
+}
+
+@mixin ellipsis{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin multiLine-ellipsis($line: 2, $lineHeight: 20px) {
+  line-height: $lineHeight;
+  overflow: hidden;
+  height: $lineHeight * $line;
+  // stylelint-disable
+  display: -webkit-box;
+  display: -moz-box;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: $line;
+  -moz-line-clamp: $line;
+  line-clamp: $line;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  // stylelint-enable
+  box-orient: vertical;
+}
+
+@mixin absoluteCenter($width, $height) {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: (-$height)/2 0 0 (-$width)/2;
+}
+
+%triangleCommonStyle {
+  display: block;
+  content: " ";
+  width: 0;
+  line-height: 0;
+  font-size: 0;
+  border-style: solid;
+  border-color: transparent;
+}
+
+/// CSS Border 三角形
+///
+/// @name triangle
+/// @param {Measure} $width - 三角形的底边的宽
+/// @param {Measure} $height - 三角形的高
+/// @param {String} $direction - 三角形的方向（即与底边相对的顶点指向的方向）
+/// @param {Color} $borderColor - 三角形的边框色
+/// @param {Color} $ie6borderColor [#f00] - IE6 不支持 border-color: transparent,而 border 三角形利用了这个特性，因此如果需要兼容 IE6，则需要填写 $ie6borderColor，颜色值一般为三角形背后元素的颜色。
+/// @throw 由于方法内包含了有 $width / 2 的计算，因此如果 $width 的值为奇数，则实际上计算出的三角形会偏小，建议 $width 不要使用奇数。
+@mixin triangle($width, $height, $direction, $borderColor, $ie6borderColor:#f00) {
+  @extend %triangleCommonStyle;
+
+  /* 向上小三角 */
+  @if $direction == top {
+    border-width: $height $width / 2;
+    border-top: 0;
+    border-bottom-color: $borderColor;
+  }
+  /* 向下小三角 */
+  @else if $direction == bottom {
+    border-width: $height $width / 2;
+    border-bottom: 0;
+    border-top-color: $borderColor;
+  }
+  /* 向左小三角 */
+  @else if $direction == left {
+    border-width: $width / 2 $height ;
+    border-left: 0;
+    border-right-color: $borderColor;
+  }
+  /* 向右小三角 */
+  @else if $direction == right {
+    border-width: $width / 2 $height;
+    border-right: 0;
+    border-left-color: $borderColor;
+  }
+}
+
+// borderStyleForOnePixel 是 onePixelBorder 内部使用的方法
+@mixin borderStyleForOnePixel($direction: all, $color:#dedede) {
+  border-style: solid;
+  border-color: $color;
+  @if $direction == all {
+    border-width: 1px;
+  }
+  @else if $direction == top {
+    border-width: 1px 0 0 0;
+  }
+  @else if $direction == bottom {
+    border-width: 0 0 1px 0;
+  }
+  @else if $direction == left {
+    border-width: 0 0 0 1px;
+  }
+  @else if $direction == right {
+    border-width: 0 1px 0 0;
+  }
+  @else if $direction == horizontal {
+    border-width: 0 1px;
+  }
+  @else if $direction == vertical {
+    border-width: 1px 0;
+  }
+}
+
+/// 在移动设备上生成 1px 宽的边框，direction 支持 all, top, bottom, left, right, horizontal, vertical 7个 direction 值，position 支持 outside 和 inside 两个值
+///
+/// @name onePixelBorder
+/// @param {String} $direction [all] - 边框的方向，支持 all（所有方向），top（上边框），right（右边框），bottom（下边框），left（左边框），horizontal（左右边框），vertical（上下边框）
+/// @param {Color} $color - 边框的颜色
+/// @param {String} $position [outside] - 边框的位置，支持 outside 和 inside
+/// @param {Number} $borderRadius [0] - 边框的圆角
+/// @throw 在多倍屏下，本方法会利用元素的 ::after 做效果，因此需要注意使用了该方法后 ::after 则尽量避免添加样式，以免影响效果
+@mixin onePixelBorder($direction: all, $color: $common_color_border, $position: outside, $borderRadius: 0) {
+  @include borderStyleForOnePixel($direction, $color);
+  border-radius: $borderRadius;
+  @include screenResolution(2) {
+    position: relative;
+    border: 0;
+    &:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 200%;
+      border-radius: $borderRadius * 2;
+      @include borderStyleForOnePixel($direction, $color);
+      transform: scale(.5);
+      transform-origin: 0 0;
+      @if $position == inside {
+        @include box_sizing(border-box);
+      }
+      pointer-events: none;
+    }
+  }
+  @include screenResolution(3) {
+    &:after {
+      width: 300%;
+      height: 300%;
+      border-radius: $borderRadius * 3;
+      transform: scale(.3333);
+    }
+  }
+}
+
+@mixin gradient-vertical($start-color: #555, $end-color: #333, $start-percent: 0%, $end-percent: 100%) {
+  background-image: linear-gradient(to bottom, $start-color $start-percent, $end-color $end-percent);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#{ie-hex-str($start-color)}", endColorstr="#{ie-hex-str($end-color)}", GradientType=0); // IE9 and down
+}
+
+@mixin gradient-horizontal($start-color: #555, $end-color: #333, $start-percent: 0%, $end-percent: 100%) {
+  background-image: linear-gradient(to right, $start-color $start-percent, $end-color $end-percent);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#{ie-hex-str($start-color)}", endColorstr="#{ie-hex-str($end-color)}", GradientType=1); // IE9 and down
+}
+
+@mixin gradient-on-axis($axis-degree: 0, $start-color: #555, $end-color: #333, $start-percent: 0%, $end-percent: 100%) {
+  background-image: linear-gradient($axis-degree, $start-color $start-percent, $end-color $end-percent);
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#{ie-hex-str($start-color)}", endColorstr="#{ie-hex-str($end-color)}", GradientType=0); // IE9 and down
+}

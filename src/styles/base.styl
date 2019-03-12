@@ -1,0 +1,51 @@
+$main-color = #00C6AE
+border-radius()
+    -webkit-border-radius arguments
+    -moz-border-radius arguments
+    border-radius arguments
+text-center()
+    text-align center
+    line-height arguments
+base-font()
+    font-size arguments
+    color #333333
+.tb-btn
+    color $main-color
+.el-button--primary
+    border 1px #00C6AE solid
+.el-button--primary:hover,
+.el-button--primary:focus
+    color: $main-color
+    border: 1px $main-color solid 
+    background none
+td
+    .el-button:hover
+        color: $main-color
+        text-decoration: underline
+.tabs
+    display flex
+    align-items center
+    justify-content center
+    margin 10px 0 20px 0
+
+    .per-tab,
+    .com-tab
+        width 96px
+        height 32px
+        text-center(32px)
+        color #333333
+        font-size: 14px
+        background #ffffff
+        border 1px #00C6AE solid
+        cursor pointer
+    .per-tab
+        border-radius 4px 0 0 4px 
+    .com-tab
+        border-radius 0 4px 4px 0  
+    .on
+        color #ffffff
+        background #00C6AE
+.el-dialog__header
+    background #E9EDF1
+.el-dialog__footer
+    text-align center
